@@ -330,54 +330,145 @@
     |=================
     */
         
-      $("#contactForm").validator().on("submit", function (event) {
-          if (event.isDefaultPrevented()) {
-            // handle the invalid form...
-            formError();
-            submitMSG(false, "Did you fill in the form properly?");
-          } else {
-            // everything looks good!
-            event.preventDefault();
-            submitForm();
-          }
-       });
+    // default form validater 
+    // $("#contactForm").validator().on("submit", function (event) {
+    //       if (event.isDefaultPrevented()) {
+    //         // handle the invalid form...
+    //         formError();
+    //         submitMSG(false, "Did you fill in the form properly?");
+    //       } else {
+    //         // everything looks good!
+    //         event.preventDefault();
+    //         submitForm();
+    //       }
+    //    });
     
-        function submitForm(){
-          var name = $("#name").val();
-          var email = $("#email").val();
-          var message = $("#message").val();
-          $.ajax({
-              type: "POST",
-              url: "process.php",
-              data: "name=" + name + "&email=" + email + "&message=" + message,
-              success : function(text){
-                  if (text == "success"){
-                      formSuccess();
-                    } else {
-                      formError();
-                      submitMSG(false,text);
-                    }
-                }
-            });
-        }
-        function formSuccess(){
-            $("#contactForm")[0].reset();
-            submitMSG(true, "Message Sent!")
-        }
-    	  function formError(){   
-    	    $("#contactForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
-    	        $(this).removeClass();
-    	    });
-    	  }
-        function submitMSG(valid, msg){
-          if(valid){
-            var msgClasses = "h3 text-center fadeInUp animated text-success";
-          } else {
-            var msgClasses = "h3 text-center shake animated text-danger";
-          }
-          $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
-        }
+    //     function submitForm(){
+    //       var name = $("#name").val();
+    //       var email = $("#email").val();
+    //       var message = $("#message").val();
+    //       $.ajax({
+    //           type: "POST",
+    //           url: "process.php",
+    //           data: "name=" + name + "&email=" + email + "&message=" + message,
+    //           success : function(text){
+    //               if (text == "success"){
+    //                   formSuccess();
+    //                 } else {
+    //                   formError();
+    //                   submitMSG(false,text);
+    //                 }
+    //             }
+    //         });
+    //     }
+    //     function formSuccess(){
+    //         $("#contactForm")[0].reset();
+    //         submitMSG(true, "Message Sent!")
+    //     }
+    // 	  function formError(){   
+    // 	    $("#contactForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function(){
+    // 	        $(this).removeClass();
+    // 	    });
+    // 	  }
+    //     function submitMSG(valid, msg){
+    //       if(valid){
+    //         var msgClasses = "h3 text-center fadeInUp animated text-success";
+    //       } else {
+    //         var msgClasses = "h3 text-center shake animated text-danger";
+    //       }
+    //       $("#msgSubmit").removeClass().addClass(msgClasses).text(msg);
+    //     }
     
-
+    
+    
     
 }(jQuery));
+
+
+    ///////////////////////////////////
+    // new form validator from nikhil//
+    //////////////////////////////////
+
+function validateForm() {
+  var name = document.getElementById("name").value;
+  var mobilenumber = document.getElementById("mobilenumber").value;
+  var email = document.getElementById("email").value;
+  var subject = document.getElementById("subject").value;
+  var message = document.getElementById("message").value;
+  var msg1 = document.getElementById("msg1")
+
+  if (name == "") {
+    msg1.innerHTML = "Name must be filled out"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false;
+  }
+
+  if (/\d/.test(name)){
+    msg1.innerHTML = "Name must be character"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false
+  }
+
+  if (mobilenumber == "") {
+    msg1.innerHTML = "Mobile Number must be filled out"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false;
+  }
+
+  if (isNaN(mobilenumber)){
+    msg1.innerHTML = "Mobile Number must be Digits"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false
+  }
+
+  if (mobilenumber.length<10){
+    msg1.innerHTML = "Mobile Number must have 10 digits"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false
+  }
+
+  if (mobilenumber.length>10){
+    msg1.innerHTML = "Mobile Number must have only 10 digits"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false
+  }
+
+  var emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  if (!emailRegex.test(email)) {
+    msg1.innerHTML = "Email must be a valid email address"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false;
+  }
+
+  if (subject == "") {
+    msg1.innerHTML = "Subject must be filled out"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false;
+  }
+
+
+  if (message == "") {
+    msg1.innerHTML = "Message must be filled out"
+    setTimeout(function(){
+            msg1.innerHTML = ""
+          },5000)
+    return false;
+  }
+  
+  return true;}
